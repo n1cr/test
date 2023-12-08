@@ -2,8 +2,6 @@
 #ifndef TCharBuffH
 #define TCharBuffH
 
-#include <System.Classes.hpp>
-
 #define CHARBUFF_MIN_FULL_SIZE 64
 
 #ifdef _WIN64
@@ -11,7 +9,6 @@
 #else
 	#define ALIGN_RANGE 4
 #endif
-
 
 class TCharBuff
 {
