@@ -22,19 +22,14 @@ __fastcall TCharBuff::~TCharBuff()
 void __fastcall TCharBuff::deleteData()
 {
 	if (data !=NULL)
-	{
-//		char* buff = (char*)data;
-//        delete []buff;
-//		delete []data;
-		free(data);
-		//HeapFree(GetProcessHeap(), 0, data);
-		data = NULL;
-		curSize = 0;
-		curPosition = 0;
+  	{
+    	free(data);
+    	data = NULL;
+	  	curSize = 0;
+	  	curPosition = 0;
         fullSize = 0;
 	}
 }
-
 
 void __fastcall TCharBuff::clearData()
 {
@@ -59,12 +54,9 @@ void __fastcall TCharBuff::resize(unsigned int newSize)
 	{
 		fullSize = newSize + CHARBUFF_MIN_FULL_SIZE;
 		allignSize(fullSize);
-//		data = new char[fullSize];
-		data = malloc(fullSize);//HeapAlloc(GetProcessHeap(), 0, fullSize); //
+		data = malloc(fullSize);
 //		if (data == NULL)
 //		{
-//            data = malloc(fullSize);
-//            int f = 0;
 //		}
 		curPosition = 0;
 	}
@@ -79,9 +71,9 @@ void __fastcall TCharBuff::resize(unsigned int newSize)
 		}
 		else
 		{
-//			char* newData;
+
 			unsigned int oldPos = curPosition;
-			unsigned int minSize;// = std::min<int>(curSize, newSize);
+			unsigned int minSize;
 			if (curSize <= newSize)
 			{
 				minSize = curSize;
@@ -90,15 +82,9 @@ void __fastcall TCharBuff::resize(unsigned int newSize)
 			{
 				minSize = newSize;
 			}
-//			fullSize = newSize + CHARBUFF_MIN_FULL_SIZE;
-//			newData = new char[fullSize];
-//			Move(data,newData,minSize);
-//			//memcpy(newData, data, minSize);
-//			deleteData();
 			fullSize = newSize + CHARBUFF_MIN_FULL_SIZE;
 			allignSize(fullSize);
-			data = realloc(data, fullSize);//HeapReAlloc(GetProcessHeap(), 0,data, fullSize); //
-//			data = newData;
+			data = realloc(data, fullSize);
 			if (oldPos > newSize)
 			{
 				curPosition = newSize;
@@ -126,14 +112,7 @@ void __fastcall TCharBuff::trimFromStart()
         clearData();
         return;
 	}
-
-	//fullSize = sizeToEnd + CHARBUFF_MIN_FULL_SIZE;
-
-	//char* newData = new char[fullSize];
 	read(data, sizeToEnd);
-//	deleteData();
-//    fullSize = sizeToEnd + CHARBUFF_MIN_FULL_SIZE;
-//	data = newData;
 	curSize = sizeToEnd;
     curPosition = 0;
 }
@@ -174,13 +153,12 @@ void __fastcall TCharBuff::write(void* source, unsigned int count)
 	}
 
 	memcpy(&((char*)data)[curPosition], source, count);
-	//Move(source, &((char*)data)[curPosition], count);
 	curPosition = curPosition + count;
 }
 
 unsigned int __fastcall TCharBuff::read(void* dest, unsigned int count)
 {
-	unsigned int maxRead;// = std::min<int>(count, getSizeToEnd());
+	unsigned int maxRead;
 	if(count <= getSizeToEnd())
 	{
 		maxRead = count;
@@ -195,7 +173,6 @@ unsigned int __fastcall TCharBuff::read(void* dest, unsigned int count)
 		return 0;
 	}
 	memcpy(dest,&((char*)data)[curPosition],maxRead);
-//	Move(&((char*)data)[curPosition], dest, maxRead);
 	curPosition = curPosition + maxRead;
     return maxRead;
 }
